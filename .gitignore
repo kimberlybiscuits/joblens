@@ -1,0 +1,6 @@
+
+.venv/
+__pycache__/
+*.pyc
+joblens.db
+joblens.egg-info/
