@@ -147,9 +147,9 @@ At each step, you should be able to:
 - [x] Step 1: Project Setup
 - [x] Step 2: Hello World with FastAPI + HTMX
 - [x] Step 3: Database Layer
-- [ ] Step 4: First Scraper (RemoteOK)
-- [ ] Step 5: Display Jobs in the Browser
-- [ ] Step 6: Search & Filtering
+- [x] Step 4: First Scraper (RemoteOK)
+- [x] Step 5: Display Jobs in the Browser
+- [x] Step 6: Search & Filtering
 - [ ] Step 7: More Scrapers
 - [ ] Step 8: Scheduled Fetching
 - [ ] Step 9: Profile Wizard
