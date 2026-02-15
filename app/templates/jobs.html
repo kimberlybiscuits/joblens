@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+  {% block content %}
+  <h2 class="text-xl font-semibold text-gray-800 mb-4">Jobs ({{ jobs|length }})</h2>
+
+  <div class="space-y-4">
+      {% for job in jobs %}
+      <div class="bg-white rounded-lg shadow p-4">
+          <div class="flex justify-between items-start">
+              <div>
+                  <a href="{{ job['url'] }}" target="_blank"
+                     class="text-lg font-medium text-blue-600 hover:underline">
+                      {{ job['title'] }}
+                  </a>
+                  <p class="text-gray-700">{{ job['company'] }}</p>
+                  <p class="text-sm text-gray-500">{{ job['location'] }}</p>
+              </div>
+              <span class="text-xs text-gray-400">{{ job['source'] }}</span>
+          </div>
+          {% if job['tags'] %}
+          <div class="mt-2 flex flex-wrap gap-1">
+              {% for tag in job['tags'].split(',') %}
+              <span class="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded">{{ tag }}</span>
+              {% endfor %}
+          </div>
+          {% endif %}
+      </div>
+      {% endfor %}
+  </div>
+  {% endblock %}

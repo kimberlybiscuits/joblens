@@ -1,0 +1,27 @@
+[project]
+  name = "joblens"
+  version = "0.1.0"
+  description = "Intelligent job search aggregator"
+  requires-python = ">=3.12"
+  dependencies = [
+      "fastapi",
+      "uvicorn[standard]",
+      "jinja2",
+      "httpx",
+      "beautifulsoup4",
+      "apscheduler",
+      "aiosqlite",
+  ]
+
+  [project.optional-dependencies]
+  dev = [
+      "pytest",
+      "pytest-asyncio",
+  ]
+
+[build-system] 
+  requires = ["setuptools"]                                               
+  build-backend = "setuptools.build_meta"                                 
+
+  [tool.setuptools.packages.find]
+  include = ["app*"]

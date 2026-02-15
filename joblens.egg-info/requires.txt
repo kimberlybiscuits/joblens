@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+jinja2
+httpx
+beautifulsoup4
+apscheduler
+aiosqlite
+
+[dev]
+pytest
+pytest-asyncio
