@@ -14,6 +14,17 @@ async def main():
     print(f"Normalized {len(jobs)} jobs")
     print(f"First job: {jobs[0]['title']} at {jobs[0]['company']}")
 
+# Fetch EuroBrussels
+    from app.scrapers.eurobrussels import EuroBrusselsScraper
+    eb_scraper = EuroBrusselsScraper()
+    print("Fetching jobs from EuroBrussels...")
+    eb_raw = await eb_scraper.fetch()
+    print(f"Got {len(eb_raw)} raw jobs")
+
+    eb_jobs = eb_scraper.normalize(eb_raw)
+    print(f"Normalized {len(eb_jobs)} jobs")
+    jobs = jobs + eb_jobs
+
     # 2. Save to DB
     init_db()
     conn = get_db()

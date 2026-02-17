@@ -14,12 +14,12 @@ async def list_jobs(request: Request, q: str = ""):
             """SELECT * FROM jobs
                 WHERE title LIKE ? OR company LIKE ? OR tags LIKE
 ?
-                ORDER BY date_posted DESC LIMIT 50""",
+                ORDER BY created_at DESC LIMIT 100""",
             (f"%{q}%", f"%{q}%", f"%{q}%"),
         ).fetchall()
     else:
         jobs = conn.execute(
-            "SELECT * FROM jobs ORDER BY date_posted DESC LIMIT 50"
+            "SELECT * FROM jobs ORDER BY created_at DESC LIMIT 100"
         ).fetchall()
     conn.close()
     return templates.TemplateResponse("jobs.html", {
