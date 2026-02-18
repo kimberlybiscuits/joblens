@@ -118,12 +118,23 @@ The full project spec (tech stack, architecture, phases) is below, followed by t
 - Store in SQLite profiles table
 - **Learning checkpoint:** Multi-step forms, structured data storage
 
-### Step 10: Ollama Integration + CV/Cover Letter Generation
-- Connect to Ollama API
-- Generate tailored CVs and cover letters from profile + job description
-- Per-job chat wizard — Ollama reads job description + profile, asks targeted questions, drafts cover letter
-- CV generation — profile as structured CV, tailored per job
-- **Learning checkpoint:** Local LLM API integration, prompt engineering
+### Step 10: Ollama Integration (Shelved)
+- Phi-3 mini installed on Mac Mini via Homebrew, SSH tunnel to Ubuntu on port 11434
+- `app/ollama_client.py` and `app/routes/cover_letter.py` built but shelved
+- Cover letter generation produced hallucinated results — small model not suited to open-ended writing
+- **Decision:** AI angle abandoned. Focus shifted to better job surfacing and matching.
+- **Learning checkpoint:** Local LLM API integration, prompt engineering, knowing when not to use AI
+
+### Step 11: Job Surfacing & Match Scoring (Next)
+- Match score badge on each job card (compare job tags vs profile skills, no AI needed)
+- Save/bookmark jobs, hide/dismiss jobs
+- Better filtering — by location, remote, source, date posted
+- Email digest — daily summary of new matched jobs
+
+### Step 12: Non-Job-Board Sources
+- Slack community job channels
+- Newsletter/RSS feeds (Working Nomads, Otta, etc.)
+- Bluesky/Mastodon job posts
 
 #### Step 10: Infrastructure Setup
 - **Model:** Phi-3 mini (~2.3GB, fits comfortably in Mac Mini's 8GB RAM)

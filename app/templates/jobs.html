@@ -55,7 +55,17 @@
                   {% endfor %}
               </div>
               {% endif %}
-          </div>
+                <div class="mt-3">                                                                          
+                    <button                                                                                 
+                        hx-post="/jobs/{{ job['id'] }}/cover-letter"                                        
+                        hx-target="#cover-letter-{{ job['id'] }}"
+                        hx-swap="innerHTML"
+                        class="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                        Analyse Job
+                    </button>
+                    <div id="cover-letter-{{ job['id'] }}" class="mt-2 text-sm text-gray-700"></div>
+                </div>          
+            </div>
           {% endfor %}
       </div>
   </div>

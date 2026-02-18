@@ -28,6 +28,9 @@ app.include_router(jobs_router)
 from app.routes.profile import router as profile_router                                                                                              
 app.include_router(profile_router)   
 
+from app.routes.cover_letter import router as cover_letter_router
+app.include_router(cover_letter_router)
+
 templates = Jinja2Templates(directory="app/templates")
 
 @app.get("/")
