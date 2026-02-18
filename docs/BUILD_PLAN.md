@@ -121,7 +121,19 @@ The full project spec (tech stack, architecture, phases) is below, followed by t
 ### Step 10: Ollama Integration + CV/Cover Letter Generation
 - Connect to Ollama API
 - Generate tailored CVs and cover letters from profile + job description
+- Per-job chat wizard — Ollama reads job description + profile, asks targeted questions, drafts cover letter
+- CV generation — profile as structured CV, tailored per job
 - **Learning checkpoint:** Local LLM API integration, prompt engineering
+
+#### Step 10: Infrastructure Setup
+- **Model:** Phi-3 mini (~2.3GB, fits comfortably in Mac Mini's 8GB RAM)
+- **Ollama runs on:** M2 Mac Mini (native, localhost only)
+- **JobLens runs on:** Ubuntu laptop
+- **Connection:** SSH tunnel from Ubuntu → Mac Mini on port 11434
+  - Tunnel command: `ssh -L 11434:localhost:11434 <user>@<mac-mini-ip>`
+  - JobLens connects to `localhost:11434` as if Ollama were local
+- **To set up Mac Mini side:** install Homebrew if needed, then `brew install ollama && ollama pull phi3`
+- **TODO:** confirm Homebrew is installed on Mac Mini before starting
 
 ### Step 11: EU Tender/RFP Intelligence Module
 - New DB tables: `tenders`, `cpv_codes`, `framework_holders`
@@ -154,7 +166,7 @@ At each step, you should be able to:
 - [x] Step 7: More Scrapers (EuroBrussels, HN Who's Hiring, EU Careers done ✓ — Impactpool + EURemoteJobs deferred, need Playwright)
 - [x] Step 8: Scheduled Fetching
 - [ ] Step 9: Profile Wizard
-- [ ] Step 10: Ollama + CV/Cover Letter Generation
+- [ ] Step 10: Ollama + CV/Cover Letter Generation (Phi-3 mini on M2 Mac Mini via SSH tunnel)
 - [ ] Step 11: EU Tender/RFP Intelligence Module
 
 ---
