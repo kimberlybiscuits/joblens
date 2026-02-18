@@ -1,6 +1,8 @@
-import httpx                                                                                                                               
+import httpx         
+import html                                                                                                                      
 from datetime import datetime                                                                                                              
-from app.scrapers.base import BaseScraper                                                                                                  
+from app.scrapers.base import BaseScraper   
+from bs4 import BeautifulSoup                                                                                                
                                                                                                                                             
 # HN doesn't have an official search API, so we use Algolia — HN's search engine.                                                        
 # It lets us find threads by keyword, which is how we locate the latest hiring post.
@@ -75,7 +77,12 @@ class HNScraper(BaseScraper):
             # The first paragraph is usually the job summary, e.g.:
             # "Acme Corp | Software Engineer | Remote | Full-time"
             first_line = text.split("<p>")[0].strip()
+            first_line = BeautifulSoup(first_line, "html.parser").get_text()                                                                           
+            first_line = html.unescape(first_line)
 
+            if '|' not in first_line:
+                continue
+            
             jobs.append({
                 "title": first_line[:200],
                 "company": "",   # too varied to parse reliably — left blank for now
