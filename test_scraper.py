@@ -25,6 +25,17 @@ async def main():
     print(f"Normalized {len(eb_jobs)} jobs")
     jobs = jobs + eb_jobs
 
+# Fetch HN Who's Hiring
+    from app.scrapers.hn import HNScraper
+    hn_scraper = HNScraper()
+    print("Fetching jobs from HN Who's Hiring...")
+    hn_raw = await hn_scraper.fetch()
+    print(f"Got {len(hn_raw)} raw comments")
+
+    hn_jobs = hn_scraper.normalize(hn_raw)
+    print(f"Normalized {len(hn_jobs)} jobs")
+    jobs = jobs + hn_jobs
+
     # 2. Save to DB
     init_db()
     conn = get_db()

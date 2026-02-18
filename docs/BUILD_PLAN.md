@@ -59,6 +59,7 @@ The full project spec (tech stack, architecture, phases) is below, followed by t
 | EuroBrussels | HTML scrape | High | Key for EU roles |
 | Impactpool | HTML scrape | High | UN/intl org jobs |
 | eu-careers.europa.eu | RSS/HTML | High | Official EU job portal |
+| EURemoteJobs | Playwright | High | JS-rendered (WordPress/WP Job Manager) |
 | UNJobs/UNTalent | HTML scrape | Medium | International org roles |
 | RemoteRocketship | HTML scrape | Medium | Good remote tech roles |
 | Working Nomads | RSS feed | Medium | Has RSS, easy integration |
@@ -150,7 +151,7 @@ At each step, you should be able to:
 - [x] Step 4: First Scraper (RemoteOK)
 - [x] Step 5: Display Jobs in the Browser
 - [x] Step 6: Search & Filtering
-- [ ] Step 7: More Scrapers
+- [ ] Step 7: More Scrapers (EuroBrussels done ✓ — HN Who's Hiring next)
 - [ ] Step 8: Scheduled Fetching
 - [ ] Step 9: Profile Wizard
 - [ ] Step 10: Ollama + CV/Cover Letter Generation
