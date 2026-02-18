@@ -34,7 +34,19 @@ async def main():
 
     hn_jobs = hn_scraper.normalize(hn_raw)
     print(f"Normalized {len(hn_jobs)} jobs")
+
+# Fetch EU Careers
+    from app.scrapers.eucareers import EUCareersScraper
+    eu_scraper = EUCareersScraper()
+    print("Fetching jobs from EU Careers...")
+    eu_raw = await eu_scraper.fetch()
+    print(f"Got {len(eu_raw)} raw jobs")
+
+    eu_jobs = eu_scraper.normalize(eu_raw)
+    print(f"Normalized {len(eu_jobs)} jobs")
+    jobs = jobs + eb_jobs
     jobs = jobs + hn_jobs
+    jobs = jobs + eu_jobs
 
     # 2. Save to DB
     init_db()
