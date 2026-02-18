@@ -40,6 +40,22 @@ def init_db():
               filters TEXT,
               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
           );
+                       
+           CREATE TABLE IF NOT EXISTS profiles (                                                                                                                
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,                                                                                                                                       
+                email TEXT,                                                                                                                                      
+                current_title TEXT,
+                years_experience INTEGER,
+                skills TEXT,
+                education TEXT,
+                languages TEXT,
+                location_preference TEXT,
+                open_to_remote BOOLEAN DEFAULT 1,
+                bio TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );            
       """)
     conn.commit()
     conn.close()

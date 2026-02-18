@@ -151,8 +151,38 @@ At each step, you should be able to:
 - [x] Step 4: First Scraper (RemoteOK)
 - [x] Step 5: Display Jobs in the Browser
 - [x] Step 6: Search & Filtering
-- [ ] Step 7: More Scrapers (EuroBrussels done ✓ — HN Who's Hiring next)
-- [ ] Step 8: Scheduled Fetching
+- [x] Step 7: More Scrapers (EuroBrussels, HN Who's Hiring, EU Careers done ✓ — Impactpool + EURemoteJobs deferred, need Playwright)
+- [x] Step 8: Scheduled Fetching
 - [ ] Step 9: Profile Wizard
 - [ ] Step 10: Ollama + CV/Cover Letter Generation
 - [ ] Step 11: EU Tender/RFP Intelligence Module
+
+---
+
+## Deferred Tasks
+
+| Task | Reason deferred | Step |
+|------|----------------|-------|
+| Impactpool scraper | JS-rendered, needs Playwright | 7 |
+| EURemoteJobs scraper | JS-rendered, needs Playwright | 7 |
+| Playwright scraper batch | Do all JS-rendered scrapers together | 7 |
+| HN job title parsing (company/role/location) | Inconsistent format — defer to Ollama | 10 |
+| Auto-refresh job list after "Fetch Now" | Nice-to-have UI improvement | 8 |
+| Raise LIMIT 100 on job list query | Needed as sources grow | 8 |
+| Check robots.txt for each scraped site | Ethical/legal due diligence | 7 |
+| Multi-user support | Replace LIMIT 1 profile logic with user_id-based lookups + auth | 9 |
+| Profile data model redesign | Split into profiles, education, work_history, skills, profile_documents tables | 9 |
+| Profile UI redesign | Structured entries per role/qualification, richer form | 9 |
+
+---
+
+## Open Source Considerations
+
+If this project is made public, the following should be addressed first:
+
+- **robots.txt compliance** — check and document each source's scraping policy
+- **ToS review** — some sites prohibit scraping even public pages; document which sources are safe
+- **Profile data** — consider not storing profile data at all, generating CV/cover letters on the fly without persistence, or making storage opt-in
+- **Scraping etiquette** — add rate limiting and a configurable fetch interval so self-hosters don't hammer sites
+- **README notice** — advise users to review each source's ToS before running
+- **Scale** — the current approach is fine for personal use; simultaneous scraping by many users would need a shared cache or API-first sources

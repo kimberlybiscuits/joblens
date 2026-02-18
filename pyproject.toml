@@ -10,6 +10,7 @@
       "httpx",
       "beautifulsoup4",
       "apscheduler",
+    "python-multipart",
       "aiosqlite",
   ]
 

@@ -25,6 +25,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 from app.routes.jobs import router as jobs_router
 app.include_router(jobs_router)
 
+from app.routes.profile import router as profile_router                                                                                              
+app.include_router(profile_router)   
+
 templates = Jinja2Templates(directory="app/templates")
 
 @app.get("/")
