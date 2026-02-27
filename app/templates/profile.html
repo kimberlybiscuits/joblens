@@ -38,6 +38,14 @@
         </div>
 
         <div>
+            <label class="block text-sm font-medium text-gray-700">Preferred job titles (comma separated)</label>
+            <input type="text" name="preferred_titles" value="{{ profile.preferred_titles if profile else '' }}"
+                placeholder="e.g. Content Strategist, Communications Officer"
+                class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2">
+        </div>
+
+
+        <div>
             <label class="block text-sm font-medium text-gray-700">Education</label>
             <textarea name="education" rows="3"
                 class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2"

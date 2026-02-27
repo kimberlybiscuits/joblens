@@ -52,19 +52,19 @@ The full project spec (tech stack, architecture, phases) is below, followed by t
 
 ## Job Board Sources
 
-| Source | Method | Priority | Notes |
-|--------|--------|----------|-------|
-| RemoteOK | JSON API | High | Free, no auth needed |
-| HN Who's Hiring | HN API | High | Monthly threads, easy to parse |
-| EuroBrussels | HTML scrape | High | Key for EU roles |
-| Impactpool | HTML scrape | High | UN/intl org jobs |
-| eu-careers.europa.eu | RSS/HTML | High | Official EU job portal |
-| EURemoteJobs | Playwright | High | JS-rendered (WordPress/WP Job Manager) |
-| UNJobs/UNTalent | HTML scrape | Medium | International org roles |
-| RemoteRocketship | HTML scrape | Medium | Good remote tech roles |
-| Working Nomads | RSS feed | Medium | Has RSS, easy integration |
-| Wellfound | HTML scrape | Low | May require auth |
-| Built In | HTML scrape | Low | Good content but may block |
+| Source | Method | Status | Notes |
+|--------|--------|--------|-------|
+| RemoteOK | JSON API | ✅ Live | Free, no auth needed |
+| HN Who's Hiring | HN API | ✅ Live | Mostly tech noise, limited value for content/comms roles |
+| EuroBrussels | HTML scrape | ✅ Live | Key for EU roles |
+| eu-careers.europa.eu | RSS/HTML | ✅ Live | Official EU job portal |
+| ProBlogger | RSS feed | 🔜 Next | Writing/content jobs, RSS available — easiest to add |
+| EU Remote Jobs | HTML scrape | 🔜 Next | Simple HTML structure, no protection |
+| ImpactPool | HTML scrape | 🔜 Next | UN/intl org jobs, pagination to handle |
+| Working in Content | HTML scrape | ⏸️ Blocked | Cloudflare + reCAPTCHA — best fit for field, worth revisiting with Playwright |
+| Working Nomads | HTML scrape | ⏸️ Blocked | Cloudflare + reCAPTCHA — revisit with Playwright |
+| Remote Rocketship | HTML scrape | ⏸️ Blocked | 403 on all requests — investigate alternative approach |
+| LinkedIn | — | ❌ Avoid | Aggressive bot detection, ToS/legal risk |
 
 ---
 
@@ -125,11 +125,18 @@ The full project spec (tech stack, architecture, phases) is below, followed by t
 - **Decision:** AI angle abandoned. Focus shifted to better job surfacing and matching.
 - **Learning checkpoint:** Local LLM API integration, prompt engineering, knowing when not to use AI
 
-### Step 11: Job Surfacing & Match Scoring (Next)
-- Match score badge on each job card (compare job tags vs profile skills, no AI needed)
-- Save/bookmark jobs, hide/dismiss jobs
-- Better filtering — by location, remote, source, date posted
-- Email digest — daily summary of new matched jobs
+### Step 11: Job Surfacing & Filtering ✅ Complete
+- **Title chip filtering** — predefined job title chips stored in profile.preferred_titles, active by default, toggleable, with Clear button
+- **Location + Remote filters** — text input for location, toggle chip for remote only
+- **Recency filter** — only shows jobs from last 90 days (date_posted if available, falls back to created_at)
+- **New badge** — green pill on jobs posted in last 48 hours
+- **Saved jobs / My Jobs page** — Save button on cards, /saved page with status cycling (Saved → Applied → Heard back) and Remove button
+- **Nav updated** — Jobs, My Jobs, Profile links
+
+### Step 12: New Sources (Next)
+- Add ProBlogger (RSS), EU Remote Jobs (HTML), ImpactPool (HTML)
+- Investigate Playwright for Cloudflare-protected sites (Working in Content, Working Nomads)
+- Consider disabling or downweighting HN (mostly tech noise)
 
 ### Step 12: Non-Job-Board Sources
 - Slack community job channels
@@ -174,11 +181,13 @@ At each step, you should be able to:
 - [x] Step 4: First Scraper (RemoteOK)
 - [x] Step 5: Display Jobs in the Browser
 - [x] Step 6: Search & Filtering
-- [x] Step 7: More Scrapers (EuroBrussels, HN Who's Hiring, EU Careers done ✓ — Impactpool + EURemoteJobs deferred, need Playwright)
+- [x] Step 7: More Scrapers (EuroBrussels, HN Who's Hiring, EU Careers done ✓ — Impactpool + EURemoteJobs deferred)
 - [x] Step 8: Scheduled Fetching
-- [ ] Step 9: Profile Wizard
-- [ ] Step 10: Ollama + CV/Cover Letter Generation (Phi-3 mini on M2 Mac Mini via SSH tunnel)
-- [ ] Step 11: EU Tender/RFP Intelligence Module
+- [x] Step 9: Profile Wizard
+- [x] Step 10: Ollama — Shelved (Phi-3 too weak, hallucinated results)
+- [x] Step 11: Job Surfacing & Filtering (title chips, recency, saved jobs, My Jobs page)
+- [ ] Step 12: New Sources (ProBlogger, EU Remote Jobs, ImpactPool + blocked sources investigation)
+- [ ] Step 13: EU Tender/RFP Intelligence Module
 
 ---
 

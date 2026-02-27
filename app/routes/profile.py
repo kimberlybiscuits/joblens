@@ -40,6 +40,7 @@ def save_profile(
     location_preference: str = Form(""),
     open_to_remote: bool = Form(False),
     bio: str = Form(""),
+    preferred_titles: str = Form(""),
 ):
     conn = get_db()
 
@@ -54,20 +55,20 @@ def save_profile(
             UPDATE profiles SET
                 name=?, email=?, current_title=?, years_experience=?,
                 skills=?, education=?, languages=?, location_preference=?,
-                open_to_remote=?, bio=?,
+                open_to_remote=?, bio=?, preferred_titles=?,
                 updated_at=CURRENT_TIMESTAMP
             WHERE id=?
         """, (name, email, current_title, years_experience, skills, education,
-            languages, location_preference, open_to_remote, bio, existing["id"]))
+            languages, location_preference, open_to_remote, bio, preferred_titles, existing["id"]))
     else:
         # First time saving — insert a fresh row.
         conn.execute("""
             INSERT INTO profiles
                 (name, email, current_title, years_experience, skills, education,
-                languages, location_preference, open_to_remote, bio)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                languages, location_preference, open_to_remote, bio, preferred_titles)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (name, email, current_title, years_experience, skills, education,
-            languages, location_preference, open_to_remote, bio))
+            languages, location_preference, open_to_remote, bio, preferred_titles))
 
     conn.commit()
     conn.close()

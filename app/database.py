@@ -57,6 +57,30 @@ def init_db():
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );            
       """)
+       # Migrations — safe to run every time                                                                                                              
+    try:
+         conn.execute("ALTER TABLE profiles ADD COLUMN preferred_titles TEXT DEFAULT ''")
+    except sqlite3.OperationalError:
+          pass  # column already exists
+    
+    # Creates the saved_jobs table if it doesn't exist yet.                                                                                               
+    # This is safe to run every time the app starts — CREATE TABLE IF NOT EXISTS                                                                    
+    # means it's a no-op if the table is already there.                                                                                               
+    try:
+        conn.executescript("""                                                                                                                        
+            CREATE TABLE IF NOT EXISTS saved_jobs (                                                                                                 
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                job_id INTEGER UNIQUE NOT NULL,
+                status TEXT DEFAULT 'saved',
+                notes TEXT DEFAULT '',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (job_id) REFERENCES jobs(id)
+            );
+        """)
+    except sqlite3.OperationalError:
+        pass
+
     conn.commit()
     conn.close()
 

@@ -1,0 +1,77 @@
+● {% extends "base.html" %}                                                                                                                             
+                                                                                                                                                    
+{% block content %}                                                                                                                                   
+
+<div class="flex justify-between items-center mb-6">                                                                                                  
+    <h1 class="text-2xl font-semibold text-gray-800">My Jobs</h1>
+    <a href="/jobs" class="text-sm text-blue-600 hover:underline">← Back to jobs</a>
+</div>
+
+{% if not jobs %}
+<p class="text-gray-500">No saved jobs yet. Hit "+ Save" on any job to track it here.</p>
+{% endif %}
+
+<div class="space-y-4">
+    {% for job in jobs %}
+    <div class="bg-white rounded-lg shadow p-4">
+
+        <div class="flex justify-between items-start">
+            <div>
+                <a href="{{ job['url'] }}" target="_blank"
+                    class="text-lg font-medium text-blue-600 hover:underline">
+                    {{ job['title'] }}
+                </a>
+                <p class="text-gray-700">{{ job['company'] }}</p>
+                <p class="text-sm text-gray-500">{{ job['location'] }}</p>
+            </div>
+            <div class="text-right">
+                <span class="text-xs text-gray-400">{{ job['source'] }}</span>
+                <!-- saved_at comes from saved_jobs.created_at, renamed in the SQL query -->
+                <p class="text-xs text-gray-400">saved {{ job['saved_at'][:10] }}</p>
+            </div>
+        </div>
+
+        <div class="mt-3 flex items-center gap-3">
+
+            <!-- Status badge — clicking POSTs to /saved/{id}/status which cycles
+                the status forward (saved → applied → heard_back → saved).
+                hx-target + hx-select replaces just this div with the updated
+                version from the server response, so the badge updates instantly. -->
+            {% set status_styles = {
+                'saved': 'bg-gray-100 text-gray-600 border-gray-300',
+                'applied': 'bg-yellow-100 text-yellow-700 border-yellow-300',
+                'heard_back': 'bg-green-100 text-green-700 border-green-300'
+            } %}
+            {% set status_labels = {
+                'saved': 'Saved',
+                'applied': 'Applied',
+                'heard_back': 'Heard back'
+            } %}
+            <button
+                hx-post="/saved/{{ job['id'] }}/status"
+                hx-target="closest div.mt-3"
+                hx-select="div.mt-3"
+                hx-swap="outerHTML"
+                class="text-xs font-medium px-3 py-1 rounded-full border {{ status_styles[job['status']] }}">
+                {{ status_labels[job['status']] }}
+            </button>
+
+            <!-- Remove button — deletes the saved_jobs row and swaps the entire
+                card out with nothing (outerHTML on the card div), making it
+                disappear instantly without a page reload. -->
+            <button
+                hx-post="/jobs/{{ job['id'] }}/unsave"
+                hx-target="closest div.bg-white"
+                hx-swap="outerHTML"
+                hx-confirm="Remove this job?"
+                class="text-xs text-gray-400 hover:text-red-500">
+                Remove
+            </button>
+
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
