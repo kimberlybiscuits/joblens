@@ -59,6 +59,17 @@ async def main():
     print(f"Normalized {len(eur_jobs)} jobs")
     jobs = jobs + eur_jobs
 
+# Fetch ImpactPool
+    from app.scrapers.impactpool import ImpactPoolScraper
+    ip_scraper = ImpactPoolScraper()
+    print("Fetching jobs from ImpactPool...")
+    ip_raw = await ip_scraper.fetch()
+    print(f"Got {len(ip_raw)} raw jobs")
+
+    ip_jobs = ip_scraper.normalize(ip_raw)
+    print(f"Normalized {len(ip_jobs)} jobs")
+    jobs = jobs + ip_jobs
+
     # 2. Save to DB
     init_db()
     conn = get_db()

@@ -7,6 +7,7 @@ from app.scrapers.eurobrussels import EuroBrusselsScraper
 from app.scrapers.hn import HNScraper
 from app.scrapers.eucareers import EUCareersScraper
 from app.scrapers.euremotejobs import EURemoteJobsScraper
+from app.scrapers.impactpool import ImpactPoolScraper
 
 # All active scrapers — add new ones here as we build them.
 SCRAPERS = [
@@ -15,6 +16,7 @@ SCRAPERS = [
     HNScraper(),
     EUCareersScraper(),
     EURemoteJobsScraper(),
+    ImpactPoolScraper(),
 ]
 
 

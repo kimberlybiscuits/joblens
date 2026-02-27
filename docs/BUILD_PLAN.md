@@ -59,7 +59,7 @@ The full project spec (tech stack, architecture, phases) is below, followed by t
 | EuroBrussels | HTML scrape | ✅ Live | Key for EU roles |
 | eu-careers.europa.eu | RSS/HTML | ✅ Live | Official EU job portal |
 | EU Remote Jobs | HTML scrape | ✅ Live | 40 jobs per fetch |
-| ImpactPool | HTML scrape | 🔜 Next | UN/intl org jobs, pagination to handle |
+| ImpactPool | HTML scrape | ✅ Live | 400 jobs per fetch (10 pages × 40) |
 | Working in Content | HTML scrape | ⏸️ Blocked | Cloudflare + reCAPTCHA — best fit for field, worth revisiting with Playwright |
 | Working Nomads | HTML scrape | ⏸️ Blocked | Cloudflare + reCAPTCHA — revisit with Playwright |
 | Remote Rocketship | HTML scrape | ⏸️ Blocked | 403 on all requests — investigate alternative approach |
@@ -185,7 +185,7 @@ At each step, you should be able to:
 - [x] Step 9: Profile Wizard
 - [x] Step 10: Ollama — Shelved (Phi-3 too weak, hallucinated results)
 - [x] Step 11: Job Surfacing & Filtering (title chips, recency, saved jobs, My Jobs page)
-- [ ] Step 12: New Sources (ImpactPool + blocked sources investigation — EU Remote Jobs ✅)
+- [x] Step 12: New Sources (EU Remote Jobs ✅, ImpactPool ✅ — blocked sources deferred to Playwright batch)
 - [ ] Step 13: EU Tender/RFP Intelligence Module
 
 ---
