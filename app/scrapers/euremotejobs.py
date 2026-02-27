@@ -22,10 +22,7 @@ class EURemoteJobsScraper(BaseScraper):
             company_tag = a.select_one("div.company-name")
             location_tag = a.select_one("div.meta-item.meta-location")
 
-            # Location div contains an <img> — get only the text node
-            location = ""
-            if location_tag:
-                location = location_tag.get_text(strip=True)
+            location = location_tag.get_text(strip=True) if location_tag else ""
 
             raw.append({
                 "title": title_tag.get_text(strip=True) if title_tag else "",

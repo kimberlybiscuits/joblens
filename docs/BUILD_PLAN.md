@@ -196,7 +196,7 @@ At each step, you should be able to:
 |------|----------------|-------|
 | Impactpool scraper | JS-rendered, needs Playwright | 7 |
 | EURemoteJobs scraper | JS-rendered, needs Playwright | 7 |
-| Playwright scraper batch | Do all JS-rendered scrapers together | 7 |
+| Playwright scraper batch | Do all JS-rendered scrapers together — includes EuroBrussels full listing (100+ jobs, currently capped at ~35) | 7 |
 | HN job title parsing (company/role/location) | Inconsistent format — defer to Ollama | 10 |
 | Auto-refresh job list after "Fetch Now" | Nice-to-have UI improvement | 8 |
 | Raise LIMIT 100 on job list query | Needed as sources grow | 8 |

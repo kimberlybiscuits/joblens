@@ -1,7 +1,7 @@
-import httpx                                                                       
-from bs4 import BeautifulSoup                                                    
-from app.scrapers.base import BaseScraper                                          
-                                                                                    
+import httpx
+from bs4 import BeautifulSoup
+from app.scrapers.base import BaseScraper
+
 URL = "https://www.eurobrussels.com/jobs"
 
 
@@ -14,19 +14,17 @@ class EuroBrusselsScraper(BaseScraper):
             response.raise_for_status()
 
         soup = BeautifulSoup(response.text, "html.parser")
-        listings = soup.select("ul.searchList li.premiumJobContainer")
+        listings = soup.select("ul.searchList li.premiumJobContainer, ul.searchList li.highlightedJobContainer")
 
         raw = []
         for li in listings:
             link_tag = li.select_one("h3 a") or li.select_one("a")
-            raw.append({                                                           
-                  "title": link_tag.get_text(strip=True) if link_tag else "",        
-                  "url": link_tag["href"] if link_tag else "",
-                  "company": li.select_one("div.companyName").get_text(strip=True) if
-   li.select_one("div.companyName") else "",
-                  "location": li.select_one("div.location").get_text(strip=True) if
-  li.select_one("div.location") else "",
-              })
+            raw.append({
+                "title": link_tag.get_text(strip=True) if link_tag else "",
+                "url": link_tag["href"] if link_tag else "",
+                "company": li.select_one("div.companyName").get_text(strip=True) if li.select_one("div.companyName") else "",
+                "location": li.select_one("div.location").get_text(strip=True) if li.select_one("div.location") else "",
+            })
         return raw
 
     def normalize(self, raw: list[dict]) -> list[dict]:
@@ -37,13 +35,13 @@ class EuroBrusselsScraper(BaseScraper):
                 url = f"https://www.eurobrussels.com{url}"
 
             jobs.append({
-                  "title": item.get("title", ""),
-                  "company": item.get("company", ""),
-                  "location": item.get("location", ""),
-                  "url": url,
-                  "source": self.source_name,
-                  "description": "",
-                  "date_posted": "",
-                  "tags": "",
-              })
+                "title": item.get("title", ""),
+                "company": item.get("company", ""),
+                "location": item.get("location", ""),
+                "url": url,
+                "source": self.source_name,
+                "description": "",
+                "date_posted": "",
+                "tags": "",
+            })
         return jobs
