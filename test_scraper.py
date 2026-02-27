@@ -48,6 +48,17 @@ async def main():
     jobs = jobs + hn_jobs
     jobs = jobs + eu_jobs
 
+# Fetch EU Remote Jobs
+    from app.scrapers.euremotejobs import EURemoteJobsScraper
+    eur_scraper = EURemoteJobsScraper()
+    print("Fetching jobs from EU Remote Jobs...")
+    eur_raw = await eur_scraper.fetch()
+    print(f"Got {len(eur_raw)} raw jobs")
+
+    eur_jobs = eur_scraper.normalize(eur_raw)
+    print(f"Normalized {len(eur_jobs)} jobs")
+    jobs = jobs + eur_jobs
+
     # 2. Save to DB
     init_db()
     conn = get_db()

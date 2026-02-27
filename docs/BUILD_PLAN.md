@@ -58,8 +58,7 @@ The full project spec (tech stack, architecture, phases) is below, followed by t
 | HN Who's Hiring | HN API | ✅ Live | Mostly tech noise, limited value for content/comms roles |
 | EuroBrussels | HTML scrape | ✅ Live | Key for EU roles |
 | eu-careers.europa.eu | RSS/HTML | ✅ Live | Official EU job portal |
-| ProBlogger | RSS feed | 🔜 Next | Writing/content jobs, RSS available — easiest to add |
-| EU Remote Jobs | HTML scrape | 🔜 Next | Simple HTML structure, no protection |
+| EU Remote Jobs | HTML scrape | ✅ Live | 40 jobs per fetch |
 | ImpactPool | HTML scrape | 🔜 Next | UN/intl org jobs, pagination to handle |
 | Working in Content | HTML scrape | ⏸️ Blocked | Cloudflare + reCAPTCHA — best fit for field, worth revisiting with Playwright |
 | Working Nomads | HTML scrape | ⏸️ Blocked | Cloudflare + reCAPTCHA — revisit with Playwright |
@@ -186,7 +185,7 @@ At each step, you should be able to:
 - [x] Step 9: Profile Wizard
 - [x] Step 10: Ollama — Shelved (Phi-3 too weak, hallucinated results)
 - [x] Step 11: Job Surfacing & Filtering (title chips, recency, saved jobs, My Jobs page)
-- [ ] Step 12: New Sources (ProBlogger, EU Remote Jobs, ImpactPool + blocked sources investigation)
+- [ ] Step 12: New Sources (ImpactPool + blocked sources investigation — EU Remote Jobs ✅)
 - [ ] Step 13: EU Tender/RFP Intelligence Module
 
 ---
