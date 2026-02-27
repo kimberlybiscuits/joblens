@@ -194,8 +194,7 @@ At each step, you should be able to:
 
 | Task | Reason deferred | Step |
 |------|----------------|-------|
-| Impactpool scraper | JS-rendered, needs Playwright | 7 |
-| EURemoteJobs scraper | JS-rendered, needs Playwright | 7 |
+| EuroBrussels full listing | JS-rendered, ~100+ jobs hidden behind dynamic filters | 7 |
 | Playwright scraper batch | Do all JS-rendered scrapers together — includes EuroBrussels full listing (100+ jobs, currently capped at ~35) | 7 |
 | HN job title parsing (company/role/location) | Inconsistent format — defer to Ollama | 10 |
 | Auto-refresh job list after "Fetch Now" | Nice-to-have UI improvement | 8 |
