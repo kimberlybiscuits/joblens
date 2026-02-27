@@ -23,7 +23,7 @@ async def list_jobs(request: Request, q: str = "", location: str = "", remote: s
     # so we use whatever titles are checked (even if none).
     active_titles = titles if use_titles else preferred_titles
 
-    conditions = ["(date_posted >= date('now', '-90 days') OR (date_posted IS NULL AND created_at >= date('now', '-90 days')))"]
+    conditions = ["(date_posted >= date('now', '-90 days') OR ((date_posted IS NULL OR date_posted = '') AND created_at >= date('now', '-90 days')))"]
     params = []
 
     if q:
@@ -47,9 +47,9 @@ async def list_jobs(request: Request, q: str = "", location: str = "", remote: s
         SELECT *,
             CASE WHEN (
                 date_posted >= date('now', '-2 days')
-                OR (date_posted IS NULL AND created_at >= date('now', '-2 days'))
+                OR ((date_posted IS NULL OR date_posted = '') AND created_at >= date('now', '-2 days'))
             ) THEN 1 ELSE 0 END as is_new
-        FROM jobs {where} ORDER BY created_at DESC LIMIT 100
+        FROM jobs {where} ORDER BY created_at DESC LIMIT 500
     """
 
     jobs = conn.execute(query, params).fetchall()
