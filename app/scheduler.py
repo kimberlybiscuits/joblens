@@ -24,17 +24,22 @@ def save_jobs(jobs: list[dict]):
     conn = get_db()
     saved = 0
     for job in jobs:
+        # Convert empty date strings to None — PostgreSQL rejects "" in TIMESTAMP columns
+        date_posted = job["date_posted"] or None
         try:
+            conn.execute("SAVEPOINT job_insert")
             conn.execute(
                 """INSERT INTO jobs
                     (title, company, location, url, source, description, date_posted, tags)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                     ON CONFLICT (url) DO NOTHING""",
                 (job["title"], job["company"], job["location"], job["url"],
-                job["source"], job["description"], job["date_posted"], job["tags"]),
+                job["source"], job["description"], date_posted, job["tags"]),
             )
+            conn.execute("RELEASE SAVEPOINT job_insert")
             saved += 1
         except Exception as e:
+            conn.execute("ROLLBACK TO SAVEPOINT job_insert")
             print(f"Skipped job: {e}")
     conn.commit()
     conn.close()
