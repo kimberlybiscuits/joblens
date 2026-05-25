@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Request, Query
-from fastapi.templating import Jinja2Templates
 from typing import List
 from app.database import get_db
 from app.scheduler import fetch_all_jobs
+from app.templates_config import templates
 
 router = APIRouter()
-templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/jobs")                                                                                                                                

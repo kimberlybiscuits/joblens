@@ -1,10 +1,9 @@
-from fastapi import APIRouter, Request, Form                                                                                                         
-from fastapi.templating import Jinja2Templates                                                                                                       
-from fastapi.responses import RedirectResponse                                                                                                       
+from fastapi import APIRouter, Request, Form
+from fastapi.responses import RedirectResponse
 from app.database import get_db
-                                                                                                                                                    
-router = APIRouter()                                                                                                                                 
-templates = Jinja2Templates(directory="app/templates")
+from app.templates_config import templates
+
+router = APIRouter()
 
 
 @router.get("/profile")

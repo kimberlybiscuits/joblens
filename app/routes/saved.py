@@ -1,10 +1,9 @@
-from fastapi import APIRouter, Request                                                                                                                
-from fastapi.templating import Jinja2Templates                                                                                                        
-from fastapi.responses import JSONResponse, HTMLResponse                                                                                                            
+from fastapi import APIRouter, Request
+from fastapi.responses import JSONResponse, HTMLResponse
 from app.database import get_db
-                                                                                                                                                    
+from app.templates_config import templates
+
 router = APIRouter()
-templates = Jinja2Templates(directory="app/templates")
 
 
 @router.post("/jobs/{job_id}/save")

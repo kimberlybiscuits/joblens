@@ -1,8 +1,8 @@
 from app.database import init_db                                                                                                           
 from app.scheduler import scheduler                                                                                                        
-from fastapi import FastAPI, Request                                                                                                       
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates                                                                                             
+from app.templates_config import templates
                                                                                                                                             
 app = FastAPI(title="JobLens")
 
@@ -31,8 +31,6 @@ app.include_router(profile_router)
 from app.routes.saved import router as saved_router                                                                                                   
 app.include_router(saved_router)   
 
-
-templates = Jinja2Templates(directory="app/templates")
 
 @app.get("/")
 async def home(request: Request):
