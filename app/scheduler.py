@@ -46,26 +46,25 @@ def save_jobs(jobs: list[dict]):
     return saved
 
 
-def fetch_all_jobs():
-    """Run all scrapers and save results. Called by the scheduler and the manual trigger."""
+async def fetch_all_jobs():
+    """Run all scrapers and save results. Called by BackgroundTasks and the scheduler."""
     print("Running scheduled fetch...")
+    for scraper in SCRAPERS:
+        try:
+            raw = await scraper.fetch()
+            jobs = scraper.normalize(raw)
+            saved = save_jobs(jobs)
+            print(f"  {scraper.source_name}: {saved} jobs saved")
+        except Exception as e:
+            print(f"  {scraper.source_name} failed: {e}")
 
-    # APScheduler runs in a background thread, not an async context.
-    # asyncio.run() lets us call our async scrapers from that sync thread.
-    async def _run():
-        for scraper in SCRAPERS:
-            try:
-                raw = await scraper.fetch()
-                jobs = scraper.normalize(raw)
-                saved = save_jobs(jobs)
-                print(f"  {scraper.source_name}: {saved} jobs saved")
-            except Exception as e:
-                print(f"  {scraper.source_name} failed: {e}")
 
-    asyncio.run(_run())
+def fetch_all_jobs_sync():
+    """Sync wrapper for APScheduler which runs in a background thread."""
+    asyncio.run(fetch_all_jobs())
 
 
 # BackgroundScheduler runs in a separate thread alongside the FastAPI app.
 # It won't block web requests while scraping.
 scheduler = BackgroundScheduler()
-scheduler.add_job(fetch_all_jobs, "interval", hours=12, id="fetch_jobs")
+scheduler.add_job(fetch_all_jobs_sync, "interval", hours=12, id="fetch_jobs")

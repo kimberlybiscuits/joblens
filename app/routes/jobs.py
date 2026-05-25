@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Query
+from fastapi import APIRouter, Request, Query, BackgroundTasks
 from typing import List
 from app.database import get_db
 from app.scheduler import fetch_all_jobs
@@ -70,12 +70,7 @@ async def list_jobs(request: Request, q: str = "", location: str = "", remote: s
     })
                                                                          
                                                                                                                                  
-@router.post("/jobs/fetch")                                                                                                    
-def trigger_fetch():                                                                                                           
-    # Run the scraper fetch in the background so the request returns immediately                                               
-    # rather than making the browser wait 30-60 seconds for all scrapers to finish.
-    import threading
-    thread = threading.Thread(target=fetch_all_jobs)
-    thread.daemon = True  # thread won't block the app from shutting down
-    thread.start()
+@router.post("/jobs/fetch")
+async def trigger_fetch(background_tasks: BackgroundTasks):
+    background_tasks.add_task(fetch_all_jobs)
     return {"message": "Fetch started"}
