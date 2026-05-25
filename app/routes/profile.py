@@ -57,7 +57,7 @@ def save_profile(
                 skills=?, education=?, languages=?, location_preference=?,
                 open_to_remote=?, bio=?, preferred_titles=?,
                 updated_at=CURRENT_TIMESTAMP
-            WHERE id=?
+            WHERE id=%s
         """, (name, email, current_title, years_experience, skills, education,
             languages, location_preference, open_to_remote, bio, preferred_titles, existing["id"]))
     else:

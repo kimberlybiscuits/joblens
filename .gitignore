@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 joblens.db
 joblens.egg-info/
+.env

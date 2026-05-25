@@ -14,7 +14,7 @@ def save_job(job_id: int):
     conn = get_db()
     try:
         conn.execute(
-            "INSERT INTO saved_jobs (job_id) VALUES (?)",
+            "INSERT INTO saved_jobs (job_id) VALUES (%s)",
             (job_id,)
         )
         conn.commit()
@@ -30,7 +30,7 @@ def save_job(job_id: int):
 def unsave_job(job_id: int):
     # Remove the job from saved_jobs entirely.
     conn = get_db()
-    conn.execute("DELETE FROM saved_jobs WHERE job_id = ?", (job_id,))
+    conn.execute("DELETE FROM saved_jobs WHERE job_id = %s", (job_id,))
     conn.commit()
     conn.close()
     # Return empty HTML — HTMX swaps this in place of the card (outerHTML),
@@ -45,12 +45,12 @@ def update_status(job_id: int):
     cycle = {"saved": "applied", "applied": "heard_back", "heard_back": "saved"}
     conn = get_db()
     current = conn.execute(
-        "SELECT status FROM saved_jobs WHERE job_id = ?", (job_id,)
+        "SELECT status FROM saved_jobs WHERE job_id = %s", (job_id,)
     ).fetchone()
     if current:
         next_status = cycle[current["status"]]
         conn.execute(
-            "UPDATE saved_jobs SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE job_id = ?",
+            "UPDATE saved_jobs SET status = %s, updated_at = CURRENT_TIMESTAMP WHERE job_id = %s",
             (next_status, job_id)
         )
         conn.commit()

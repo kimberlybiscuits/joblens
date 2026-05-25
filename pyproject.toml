@@ -11,7 +11,8 @@
       "beautifulsoup4",
       "apscheduler",
     "python-multipart",
-      "aiosqlite",
+      "psycopg2-binary",
+      "python-dotenv",
   ]
 
   [project.optional-dependencies]

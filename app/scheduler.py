@@ -1,5 +1,4 @@
-import asyncio                                                                                                                             
-import sqlite3                                                                                                                             
+import asyncio
 from apscheduler.schedulers.background import BackgroundScheduler                                                                          
 from app.database import get_db                                                                                                            
 from app.scrapers.remoteok import RemoteOKScraper
@@ -27,9 +26,10 @@ def save_jobs(jobs: list[dict]):
     for job in jobs:
         try:
             conn.execute(
-                """INSERT OR IGNORE INTO jobs
+                """INSERT INTO jobs
                     (title, company, location, url, source, description, date_posted, tags)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (url) DO NOTHING""",
                 (job["title"], job["company"], job["location"], job["url"],
                 job["source"], job["description"], job["date_posted"], job["tags"]),
             )

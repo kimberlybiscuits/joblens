@@ -1,86 +1,97 @@
-import sqlite3
-from pathlib import Path
+import os
+import psycopg2
+from psycopg2.extras import RealDictCursor
+from dotenv import load_dotenv
 
-DB_PATH = Path("joblens.db")
+load_dotenv()
+
+DATABASE_URL = os.environ["DATABASE_URL"]
 
 
-def get_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row  # lets you access columns by name
-    return conn
+class Connection:
+    """Wraps psycopg2 to keep the same conn.execute().fetchall() interface as sqlite3."""
+
+    def __init__(self):
+        self._conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
+        self._cur = self._conn.cursor()
+
+    def execute(self, query, params=()):
+        self._cur.execute(query, params)
+        return self._cur
+
+    def commit(self):
+        self._conn.commit()
+
+    def close(self):
+        self._cur.close()
+        self._conn.close()
+
+
+def get_db() -> Connection:
+    return Connection()
 
 
 def init_db():
     conn = get_db()
-    conn.executescript("""
-          CREATE TABLE IF NOT EXISTS sources (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT UNIQUE NOT NULL,
-              url TEXT,
-              last_fetched TIMESTAMP
-          );
-
-          CREATE TABLE IF NOT EXISTS jobs (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              title TEXT NOT NULL,
-              company TEXT,
-              location TEXT,
-              url TEXT UNIQUE,
-              source TEXT,
-              description TEXT,
-              date_posted TIMESTAMP,
-              tags TEXT,
-              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-          );
-
-          CREATE TABLE IF NOT EXISTS search_queries (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT NOT NULL,
-              keywords TEXT,
-              filters TEXT,
-              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-          );
-                       
-           CREATE TABLE IF NOT EXISTS profiles (                                                                                                                
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT,                                                                                                                                       
-                email TEXT,                                                                                                                                      
-                current_title TEXT,
-                years_experience INTEGER,
-                skills TEXT,
-                education TEXT,
-                languages TEXT,
-                location_preference TEXT,
-                open_to_remote BOOLEAN DEFAULT 1,
-                bio TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );            
-      """)
-       # Migrations — safe to run every time                                                                                                              
-    try:
-         conn.execute("ALTER TABLE profiles ADD COLUMN preferred_titles TEXT DEFAULT ''")
-    except sqlite3.OperationalError:
-          pass  # column already exists
-    
-    # Creates the saved_jobs table if it doesn't exist yet.                                                                                               
-    # This is safe to run every time the app starts — CREATE TABLE IF NOT EXISTS                                                                    
-    # means it's a no-op if the table is already there.                                                                                               
-    try:
-        conn.executescript("""                                                                                                                        
-            CREATE TABLE IF NOT EXISTS saved_jobs (                                                                                                 
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                job_id INTEGER UNIQUE NOT NULL,
-                status TEXT DEFAULT 'saved',
-                notes TEXT DEFAULT '',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (job_id) REFERENCES jobs(id)
-            );
-        """)
-    except sqlite3.OperationalError:
-        pass
-
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS sources (
+            id SERIAL PRIMARY KEY,
+            name TEXT UNIQUE NOT NULL,
+            url TEXT,
+            last_fetched TIMESTAMP
+        )
+    """)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS jobs (
+            id SERIAL PRIMARY KEY,
+            title TEXT NOT NULL,
+            company TEXT,
+            location TEXT,
+            url TEXT UNIQUE,
+            source TEXT,
+            description TEXT,
+            date_posted TIMESTAMP,
+            tags TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS search_queries (
+            id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL,
+            keywords TEXT,
+            filters TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS profiles (
+            id SERIAL PRIMARY KEY,
+            name TEXT,
+            email TEXT,
+            current_title TEXT,
+            years_experience INTEGER,
+            skills TEXT,
+            education TEXT,
+            languages TEXT,
+            location_preference TEXT,
+            open_to_remote BOOLEAN DEFAULT TRUE,
+            bio TEXT,
+            preferred_titles TEXT DEFAULT '',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS saved_jobs (
+            id SERIAL PRIMARY KEY,
+            job_id INTEGER UNIQUE NOT NULL,
+            status TEXT DEFAULT 'saved',
+            notes TEXT DEFAULT '',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (job_id) REFERENCES jobs(id)
+        )
+    """)
     conn.commit()
     conn.close()
-
