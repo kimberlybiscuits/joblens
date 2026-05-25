@@ -27,7 +27,7 @@
             <div class="text-right">
                 <span class="text-xs text-gray-400">{{ job['source'] }}</span>
                 <!-- saved_at comes from saved_jobs.created_at, renamed in the SQL query -->
-                <p class="text-xs text-gray-400">saved {{ job['saved_at'][:10] }}</p>
+                <p class="text-xs text-gray-400">saved {{ job['saved_at'] | dateformat }}</p>
             </div>
         </div>
 

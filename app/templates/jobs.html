@@ -89,7 +89,7 @@
                 </div>
                 <div class="text-right">
                     <span class="text-xs text-gray-400">{{ job['source'] }}</span>
-                    <p class="text-xs text-gray-400">{{ job['date_posted'][:10] if job['date_posted'] else job['created_at'][:10] }}</p>
+                    <p class="text-xs text-gray-400">{{ (job['date_posted'] or job['created_at']) | dateformat }}</p>
                 </div>
             </div>
             {% if job['tags'] %}
