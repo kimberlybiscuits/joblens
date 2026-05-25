@@ -17,8 +17,7 @@ def show_profile(request: Request):
 
     # Pass the profile to the template. If it's None (first visit),
     # the template will render an empty form.
-    return templates.TemplateResponse("profile.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "profile.html", {
         "profile": profile,
     })
 

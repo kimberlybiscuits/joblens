@@ -59,8 +59,7 @@ async def list_jobs(request: Request, q: str = "", location: str = "", remote: s
 
     conn.close()
 
-    return templates.TemplateResponse("jobs.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "jobs.html", {
         "jobs": jobs,
         "q": q,
         "location": location,

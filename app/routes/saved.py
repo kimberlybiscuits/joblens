@@ -70,7 +70,6 @@ def saved_jobs(request: Request):
         ORDER BY s.created_at DESC
     """).fetchall()
     conn.close()
-    return templates.TemplateResponse("saved.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "saved.html", {
         "jobs": jobs,
     })
